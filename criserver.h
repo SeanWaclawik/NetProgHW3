@@ -46,6 +46,7 @@ struct clientStruct
 {
 	char *username;
 	int sd;
+	bool op;
 	struct clientStruct * next;
 	
 	struct channelStruct ** channels;
