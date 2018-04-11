@@ -11,6 +11,8 @@
 
 #include "criserver.h"
 
+typedef struct clientStruct client_conn;
+
 int main(int argc, char ** argv)
 {
 	//declare/initialize variables
@@ -19,8 +21,9 @@ int main(int argc, char ** argv)
 	fd_set rsds;
 	fd_set asds;
 	unsigned short port = 0;
-	struct client_conn * headclient = NULL;
-	struct client_conn * thisclient = NULL;
+	client_conn * headclient = NULL;
+	client_conn * thisclient = NULL;
+	struct channelStruct *channels = NULL;
 
 
 	
@@ -71,7 +74,7 @@ int main(int argc, char ** argv)
 			{
 				sd = (thisclient->sd);
 				//data is waiting on sd.. call handle_message to process the request and inspect the return code
-				if((handle_message((thisclient->sd), (thisclient->username), (&headclient))) <= 0)
+				if((handle_message((thisclient->sd), (thisclient->username), (&headclient), (&channels))) <= 0)
 				{
 					//either the client gracefully dropped the connection or a non-fatal error occurred.. remove the socket descriptor
 					FD_CLR(sd, (&asds));
